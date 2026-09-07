@@ -1,5 +1,6 @@
 project:
   type: book
+  output-dir: docs
 
 book:
   title: "Hands-on workshop: Reproducible Spatial Analysis with R. AGILE PhD School 2026, Glasgow."
