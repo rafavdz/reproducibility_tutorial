@@ -4,7 +4,7 @@ Imagine that, instead of sending someone your analysis and asking them to instal
 
 `Docker` is one of the most widely used technologies for creating and running these containers. Instead of packaging an entire physical computer, `Docker` allows us to define a lightweight, reproducible computing environment containing things such as a particular version of `R`, R packages, system libraries, and other software required by the project. We can describe this environment in a `Dockerfile`, build it into a Docker image, and then run that image as a container. In this way, Docker extends what we have done with renv. Specifically, we can capture much more of the environment in which those packages and the analysis run as done previously.
 
-Docker and Binder
+## Docker and Binder
 
 In this workshop, we will use `Docker` together via [Binder](https://mybinder.org/) as one way of making a project easier for others to reproduce. `Docker` defines the computing environment, while Binder can take the project and its container configuration and make it available through a simple web browser! So, someone can launch the project without first installing R, configuring the required packages, or setting up Docker on their own computer. Magic!
 
@@ -12,7 +12,7 @@ However, Binder is not a solution for every project. Resources such as computing
 
 For this workshop, we will use Binder to run our Docker-based environment through a web browser, so participants do not need to install Docker or configure the environment locally. Running Docker directly on a computer is a more flexible option, particularly when you need more control or computing resources, but that workflow is beyond the scope of this tutorial.
 
-Why do I need to learn about Docker?
+## Why do I need to learn about Docker?
 
 You might reasonably ask: if renv and targets already make my R project reproducible, why do I need Docker? This is because reproducibility has several layers. `renv` helps us reproduce the `R` package environment, and targets helps us reproduce the analysis workflow, but neither necessarily captures everything installed on the computer. An analysis might also depend on a particular version of R, system libraries,etc.
 
