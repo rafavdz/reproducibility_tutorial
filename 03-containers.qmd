@@ -1,2 +1,168 @@
 # Containers: Your own Git repository reproducible in Binder
 
+Imagine that, instead of sending someone your analysis and asking them to install `R`, the right packages, system libraries, and other software, you could simply put the whole computer you used for the analysis in a box and post it to them. They could open the box, switch it on, and run the analysis in exactly the same environment. Of course, we cannot realistically post our laptops around every time we share an analysis—but this is roughly the idea behind containers. A container packages an application together with the software and system components it needs to run, providing a consistent environment across different computers.
+
+`Docker` is one of the most widely used technologies for creating and running these containers. Instead of packaging an entire physical computer, `Docker` allows us to define a lightweight, reproducible computing environment containing things such as a particular version of `R`, R packages, system libraries, and other software required by the project. We can describe this environment in a `Dockerfile`, build it into a Docker image, and then run that image as a container. In this way, Docker extends what we have done with renv. Specifically, we can capture much more of the environment in which those packages and the analysis run as done previously.
+
+Docker and Binder
+
+In this workshop, we will use `Docker` together via [Binder](https://mybinder.org/) as one way of making a project easier for others to reproduce. `Docker` defines the computing environment, while Binder can take the project and its container configuration and make it available through a simple web browser! So, someone can launch the project without first installing R, configuring the required packages, or setting up Docker on their own computer. Magic!
+
+However, Binder is not a solution for every project. Resources such as computing power and session time are limited, and Binder is generally better suited to interactive or educational projects. Still, full analysis examples are available out there accompanying published papers.
+
+For this workshop, we will use Binder to run our Docker-based environment through a web browser, so participants do not need to install Docker or configure the environment locally. Running Docker directly on a computer is a more flexible option, particularly when you need more control or computing resources, but that workflow is beyond the scope of this tutorial.
+
+Why do I need to learn about Docker?
+
+You might reasonably ask: if renv and targets already make my R project reproducible, why do I need Docker? This is because reproducibility has several layers. `renv` helps us reproduce the `R` package environment, and targets helps us reproduce the analysis workflow, but neither necessarily captures everything installed on the computer. An analysis might also depend on a particular version of R, system libraries,etc.
+
+Fro now, the important thing is to understand the basic idea: instead of asking someone to recreate your computing environment manually, you give them a description of that environment that can be used to recreate it automatically. Combined with `renv` and `targets`, this gives us a much more complete reproducible workflow.
+
+## Task
+
+This walks through the final `Dockerfile` used to publish [`rafavdz/reprod_workshop3`](https://github.com/rafavdz/reprod_workshop3) on [mybinder.org](https://mybinder.org), step by step.
+
+## Instructions
+
+You will continue working on your Rstudio project. If there was not enough time to complete the acitivites of the previosu step, you can download [this completed R Project from GitHub](https://github.com/rafavdz/reprod_workshop2), and pick it up from there.
+
+Create a simple empty text file name `Docker` in your root directory.
+
+### Choose the base image
+
+Start from the Rocker Project's `binder` image, pinned to the exact R version recorded in `renv.lock`. Please check which version you are using.
+
+```dockerfile
+FROM rocker/binder:4.4.1
+```
+In this case, we are not trying to recover an older workflow in R. So, no need to go back in time.
+
+`renv.lock` records the R version the packages were snapshotted against, so the container's R version and the lockfile's R version need to match for `renv::restore()`.
+
+## Install system libraries for spatial operations
+
+The project uses `sf`/`terra`, which link against GDAL, GEOS, and PROJ at the C/C++ level. `rocker/binder` doesn't include these by default (that's only the `rocker/geospatial` family), so they're installed manually. This has to happen as `root`, then the shell drops back to the regular container user for everything else.
+
+```dockerfile
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgdal-dev \
+    gdal-bin \
+    libgeos-dev \
+    libproj-dev \
+    libudunits2-dev \
+    && rm -rf /var/lib/apt/lists/*
+USER ${NB_USER}
+```
+
+Without this step, `renv::restore()` either fails outright trying to compile `sf`/`terra` from source, or fails to find the headers it needs even if a source build is attempted.
+
+`rm -rf /var/lib/apt/lists/*` at the end isn't strictly required, but it keeps the image smaller by discarding the package index Debian/Ubuntu downloaded for `apt-get update`.
+
+## Set the working directory
+
+```dockerfile
+WORKDIR ${HOME}
+```
+
+`${NB_USER}` and `${HOME}` are environment variables already defined by the `rocker/binder` base image (`NB_USER=rstudio`, `HOME=/home/rstudio`). Using the variables instead of hardcoding `/home/rstudio` keeps the Dockerfile portable if the base image's user ever changes.
+
+## Copy only the renv bootstrap files first
+
+```dockerfile
+COPY --chown=${NB_USER} renv.lock renv.lock
+COPY --chown=${NB_USER} .Rprofile .Rprofile
+RUN mkdir -p renv
+COPY --chown=${NB_USER} renv/activate.R renv/activate.R
+COPY --chown=${NB_USER} renv/settings.json renv/settings.json
+```
+
+Here, Docker caches each instruction as a layer, and invalidates a layer (and everything after it) only when its inputs change. By copying *just* the four files renv actually needs to bootstrap itself — before copying the rest of the repository — the expensive package-restore step below only re-runs when `renv.lock` or renv's own config changes. Editing an R script or a README later won't force a full package reinstall on the next build.
+
+`--chown=${NB_USER}` ensures these files are owned by the container's regular user, not `root`. Otherwise, later R sessions running as `rstudio` could hit permission errors touching renv's files.
+
+## Restore the R environment
+
+```dockerfile
+RUN R -e "renv::restore()"
+```
+
+This installs every package pinned in `renv.lock` into renv's own project-local library (not the system library). Two consequences of that choice, made deliberately for this repository:
+
+- **renv stays active at runtime.** Because `.Rprofile` and `renv/activate.R` are still present in the image, every new R session in the running container re-activates renv automatically — attaching the already-restored library, not reinstalling anything.
+- **The lockfile stays visible and inspectable.** Anyone inspecting this workflow can open `renv.lock`, run `renv::status()`, and see exactly what's pinned, which is in line of a reproducibility workshop.
+
+## Copy the rest of the repository
+
+```dockerfile
+COPY --chown=${NB_USER} . ${HOME}
+```
+
+Everything else — scripts, `_targets.R`, data folders, documentation — gets copied in after the package restore. Because this happens *after* the cached restore layer, changing any of these files and rebuilding only re-runs this `COPY` and nothing above it.
+
+## Declare how the container runs
+
+```dockerfile
+EXPOSE 8888
+CMD ["jupyter", "lab", "--ip", "0.0.0.0", "--no-browser"]
+```
+
+These two lines are inherited from the upstream `rocker/binder` image and are restated here for clarity. Binder's infrastructure expects a Jupyter server listening on `8888`, which is what actually gets launched. RStudio isn't started by a separate `CMD`; it's reached through `jupyter-rsession-proxy`, which routes a browser request at a specific path through to an `rserver` process the image already knows how to start. That's what the launch URL takes care of next.
+
+## Final Dockerfile
+
+So your final Docker file should look as following:
+
+```dockerfile
+FROM rocker/binder:4.4.1
+
+# --- system libraries for sf/terra ---
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgdal-dev \
+    gdal-bin \
+    libgeos-dev \
+    libproj-dev \
+    libudunits2-dev \
+    && rm -rf /var/lib/apt/lists/*
+USER ${NB_USER}
+
+WORKDIR ${HOME}
+
+# --- copy only the renv bootstrap files first (better build-cache reuse) ---
+COPY --chown=${NB_USER} renv.lock renv.lock
+COPY --chown=${NB_USER} .Rprofile .Rprofile
+RUN mkdir -p renv
+COPY --chown=${NB_USER} renv/activate.R renv/activate.R
+COPY --chown=${NB_USER} renv/settings.json renv/settings.json
+
+# --- restore into renv's own project library (kept active at runtime) ---
+RUN R -e "renv::restore()"
+
+# --- now copy the rest of the repository ---
+COPY --chown=${NB_USER} . ${HOME}
+
+EXPOSE 8888
+CMD ["jupyter", "lab", "--ip", "0.0.0.0", "--no-browser"]
+```
+
+Save this in your project.
+
+
+
+### Add the Launch-in-Binder badge
+
+Add the following in your README.md
+
+```
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/rafavdz/reprod_workshop3/main?urlpath=rstudio)
+```
+
+This gives anyone visiting the repository a one-click route into a running RStudio session with the environment already restored.
+
+Now, make sure to commit your changes, and push them.
+
+### Next steps in Binder.
+
+No need to follow these, as it is time and resource consuming for the remote server, but you can access 
+

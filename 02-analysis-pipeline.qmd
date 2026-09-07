@@ -351,6 +351,7 @@ Now, run the targets with `targets::tar_make()`. This should only excecutre the 
 
 ![](images/accessibility_map.png)
 
+If for some reason, something didn't go well or there was not enough time to complete this activity, you can download the complete activities from [this repo](https://github.com/rafavdz/reprod_workshop2). You should be able to quickly restore the renv, and the, simply run `target::tar_make()`.
 
 ## Limitations and next steps
 
