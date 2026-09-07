@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -135,8 +169,27 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#why-do-i-need-targets" id="toc-why-do-i-need-targets" class="nav-link active" data-scroll-target="#why-do-i-need-targets"><span class="header-section-number">2.1</span> Why do I need targets?</a></li>
+  <li><a href="#how-is-this-done" id="toc-how-is-this-done" class="nav-link" data-scroll-target="#how-is-this-done"><span class="header-section-number">2.2</span> How is this done?</a></li>
+  <li><a href="#instructions" id="toc-instructions" class="nav-link" data-scroll-target="#instructions"><span class="header-section-number">2.3</span> Instructions</a>
+  <ul class="collapse">
+  <li><a href="#getting-ready" id="toc-getting-ready" class="nav-link" data-scroll-target="#getting-ready"><span class="header-section-number">2.3.1</span> Getting ready</a></li>
+  <li><a href="#a-targets-pipeline-structure-and-an-example" id="toc-a-targets-pipeline-structure-and-an-example" class="nav-link" data-scroll-target="#a-targets-pipeline-structure-and-an-example"><span class="header-section-number">2.3.2</span> A <code>{targets}</code> pipeline structure and an example</a></li>
+  <li><a href="#exploring-how-targets-works" id="toc-exploring-how-targets-works" class="nav-link" data-scroll-target="#exploring-how-targets-works"><span class="header-section-number">2.3.3</span> Exploring how <code>{targets}</code> works</a></li>
+  <li><a href="#setting-_targets-for-our-own-analysis" id="toc-setting-_targets-for-our-own-analysis" class="nav-link" data-scroll-target="#setting-_targets-for-our-own-analysis"><span class="header-section-number">2.3.4</span> Setting _targets for our own analysis</a></li>
+  <li><a href="#step-3---processing-spatial-data" id="toc-step-3---processing-spatial-data" class="nav-link" data-scroll-target="#step-3---processing-spatial-data"><span class="header-section-number">2.3.5</span> Step 3 - Processing spatial data</a></li>
+  <li><a href="#step-4---modelling-or-creating-ouputs" id="toc-step-4---modelling-or-creating-ouputs" class="nav-link" data-scroll-target="#step-4---modelling-or-creating-ouputs"><span class="header-section-number">2.3.6</span> Step 4 - Modelling or creating ouputs</a></li>
+  <li><a href="#excecuting-the-full-pipeline" id="toc-excecuting-the-full-pipeline" class="nav-link" data-scroll-target="#excecuting-the-full-pipeline"><span class="header-section-number">2.3.7</span> Excecuting the full pipeline</a></li>
+  <li><a href="#build-the-full-pipeline" id="toc-build-the-full-pipeline" class="nav-link" data-scroll-target="#build-the-full-pipeline"><span class="header-section-number">2.3.8</span> Build the full pipeline</a></li>
+  </ul></li>
+  <li><a href="#limitations-and-next-steps" id="toc-limitations-and-next-steps" class="nav-link" data-scroll-target="#limitations-and-next-steps"><span class="header-section-number">2.4</span> Limitations and next steps</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -160,8 +213,283 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="why-do-i-need-targets" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="why-do-i-need-targets"><span class="header-section-number">2.1</span> Why do I need targets?</h2>
+<p>Have you ever had to re-run an entire analysis from the beginning because you changed one input file or modified a single step in your code? or, have you came across a code-based project developed by someone else, and you don’t know where to start?! This can become particularly frustrating when some parts of the analysis take a long time to run or when a project consists of many scripts that need to be executed in a particular order.</p>
+<p>This is where <code>{targets}</code> comes in handy. It helps you organise an analysis as a pipeline of connected steps, where the output of one step becomes the input of another. targets keeps track of these relationships and knows which parts of the analysis need to be re-run when something changes. This makes complex analyses easier to manage, update, and reproduce, while avoiding unnecessary computation.</p>
+<p>For those with <code>Python</code> experience, this very similar to <code>Snakemake</code>.</p>
+</section>
+<section id="how-is-this-done" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="how-is-this-done"><span class="header-section-number">2.2</span> How is this done?</h2>
+<p>Think of targets as turning your analysis into a map of connected tasks. You define the main steps of your workflow—such as importing, cleaning, analysing, and visualising data—and specify how they depend on each other. targets then builds a dependency graph of these steps, so it knows what needs to be run and in what order.</p>
+<p>You run the pipeline with <code>targets::tar_make()</code>. <code>{targets}</code> checks what has changed since the last run and re-runs only the steps affected by those changes, rather than running the whole analysis from scratch. This makes the your work more efficient and, importantly, makes the logic and dependencies of your analysis explicit and easier for others (or your future self) to understand and reproduce.</p>
+</section>
+<section id="instructions" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="instructions"><span class="header-section-number">2.3</span> Instructions</h2>
+<p>Overview: In this part, we will create a pipeline with some spatial functions which will in the end create a reproducible map showing accessibility by public transport to employment in Glasgow Region. To do so, we will follow the following conceptual steps.</p>
+<ol type="1">
+<li>Download accessibility data (Pre-computed accessibility indices by public transport)</li>
+<li>Download spatial data (Administrative boundaries in Scotland callde Data Zones)</li>
+<li>Process and join data</li>
+<li>Generate map</li>
+</ol>
+<section id="getting-ready" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="getting-ready"><span class="header-section-number">2.3.1</span> Getting ready</h3>
+<p>Continue working in your RStudio project where you left it. Alternatively, if you did have time to finish it, you can pick it up where we leave by downloading a copy of the repository from <a href="https://github.com/rafavdz/reprod_workshop1">here</a> (click on the green botton that say ‘Code’ and then download). If you download it, then restore the environment following the instructions <a href="#restore-environment">here</a>.</p>
+<p>Before moving forward, just check that the packages needed are there running:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">status</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>{renv}</code> should report that the project is consistent with the lockfile.</p>
+</section>
+<section id="a-targets-pipeline-structure-and-an-example" class="level3" data-number="2.3.2">
+<h3 data-number="2.3.2" class="anchored" data-anchor-id="a-targets-pipeline-structure-and-an-example"><span class="header-section-number">2.3.2</span> A <code>{targets}</code> pipeline structure and an example</h3>
+<p>A <code>{targets}</code> pipeline is organised around a special <code>_targets.R</code> file, which acts as the blueprint for your analysis workflow. Inside this file, you define a series of targets (the individual steps of your analysis) and how they depend on one another. A typical pipeline might move from reading/downloading <code>data -&gt; cleaning/processing data -&gt; analysing/modelling data</code>, with each step becoming a target that <code>{targets}</code> can track and re-run when necessary.</p>
+<p>To see what a basic <code>{targets}</code> project looks like, you can let the package create a small template for you including a toy pipeline example:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>targets<span class="sc">::</span><span class="fu">use_targets</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This creates the basic files and folders needed to get started, including <code>_targets.R</code> file in your root directory.</p>
+</section>
+<section id="exploring-how-targets-works" class="level3" data-number="2.3.3">
+<h3 data-number="2.3.3" class="anchored" data-anchor-id="exploring-how-targets-works"><span class="header-section-number">2.3.3</span> Exploring how <code>{targets}</code> works</h3>
+<p>Let’s explore how <code>{targets}</code> represents the different steps and their dependencies. Start by opening the <code>_targets.R</code> which was created in the root directory and looking at the example that was just created.</p>
+<p>You can visualise the pipeline with:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>targets<span class="sc">::</span><span class="fu">tar_visnetwork</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When you run <code>targets::tar_visnetwork()</code>, you may be prompted to install the <code>visNetwork</code> package, which is used to display the pipeline as an interactive network.</p>
+<p>If prompted, follow the instructions to install the package. Once it has been installed, remember to run <code>renv::snapshot()</code> so that the new dependency is recorded in your <code>renv.lock</code> file.</p>
+</div>
+</div>
+<p>This opens a diagram showing the targets in your pipeline and the relationships between them. Take a moment to explore the diagram and see how the different steps are connected.</p>
+<p>Next, run the pipeline:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>targets<span class="sc">::</span><span class="fu">tar_make</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>tar_make()</code> executes the targets in the order oulined in the list, based on their dependencies. A folder called _targets is created in the root directory. You can access these files and check for intermediate steps. You can learn more <a href="https://books.ropensci.org/targets/data.html">here</a>.</p>
+<p>Once it has finished, run <code>targets::tar_visnetwork()</code> again and explore the differences. This helps to understand how <code>{targets}</code> keeps track of the workflow and its outputs.</p>
+<p>Delete saved outputs of all or certain steps, run:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>targets<span class="sc">::</span><span class="fu">tar_destroy</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To delete the saved results of steps that you might have deleted and will not use anymore, you could run:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>targets<span class="sc">::</span><span class="fu">tar_prune</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="setting-_targets-for-our-own-analysis" class="level3" data-number="2.3.4">
+<h3 data-number="2.3.4" class="anchored" data-anchor-id="setting-_targets-for-our-own-analysis"><span class="header-section-number">2.3.4</span> Setting _targets for our own analysis</h3>
+<p>You can simplify the <code>_targets.R</code> file by removing most of the explanatory comments muted with the hastag, particularly those describing the available target options. For this tutorial, we recommend keeping the configuration simple and setting the default storage format to qs:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tar_option_set</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">format =</span> <span class="st">"qs"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The ‘qs’ format is a faster and more space-efficient alternative to the standard rds format. This is the format that targets will use to save the output of each target unless you explicitly use <code>format = "file"</code> or specify a different format within an individual tar_target().</p>
+<p>It is also recommened removing the packages option from <code>tar_option_set()</code> and instead specifying the packages required by each <code>tar_target()</code> individually. This makes the pipeline more efficient and robust as each target only loads the packages it actually needs, reducing overhead and potential conflicts. For more configuration options, see the <code>tar_option_set()</code> documentation.</p>
+<p>###&nbsp;Step 1 and 2 in our analyses</p>
+<p>The recommended workflow is that you organise the your work with custom R functions. For instance, the first thing we need to do is download data.</p>
+<p>For this, create a in simple empty <code>R</code> script called <code>01_utils.R</code> and save it in the <code>R/</code> folder (create it if you don’t have one).</p>
+<p>First we want to start by downloading the accessibility data using some code such as:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">"./data/raw"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>url_data <span class="ot">&lt;-</span> <span class="st">'https://huggingface.co/datasets/rafavdz/accessibility-indicators-2023/resolve/main/records/employment_all/access_employment_all_pt.csv'</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"./data/raw/"</span>, <span class="fu">basename</span>(url_data))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">url =</span> url_data,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">destfile =</span> file,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">"wb"</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We will wrap this steps in a function. So, in your <code>01_utils.R</code>, write the following:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download accessibility data</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>download_accessibility <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="st">"./data/raw"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  url_data <span class="ot">&lt;-</span> <span class="st">'https://huggingface.co/datasets/rafavdz/accessibility-indicators-2023/resolve/main/records/employment_all/access_employment_all_pt.csv'</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  file <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"./data/raw/"</span>, <span class="fu">basename</span>(url_data))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">download.file</span>(</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">url =</span> url_data,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">destfile =</span> file,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">mode =</span> <span class="st">"wb"</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(file)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This data contains the accessibility levels for each cesus area in Great Britain (LSOA in England and Data Zone in Scotland).</p>
+<p>Additionally, we will need the spatial data repsenting each of the Data Zones in Scotland. Then, write the following function in <code>01_utils.R</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download data zone geometries in Scotland</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>download_datazone <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="st">"./data/raw"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  zip <span class="ot">&lt;-</span> <span class="st">"./data/raw/SG_DataZoneBdry_2011.zip"</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  dir <span class="ot">&lt;-</span> <span class="st">"./data/raw/datazones_scotland"</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">download.file</span>(</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://huggingface.co/datasets/rafavdz/datazones_scotland2011/resolve/main/datazones_scotland.zip"</span>,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    zip,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">mode =</span> <span class="st">"wb"</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir.create</span>(dir, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unzip</span>(zip, <span class="at">exdir =</span> dir)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">file.remove</span>(zip)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  shp_path <span class="ot">&lt;-</span> <span class="fu">list.files</span>(</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    dir,</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.shp$"</span>,</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">recursive =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">full.names =</span> <span class="cn">TRUE</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(shp_path)</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="setting-the-new-functions-and-targets-to-download-data" class="level4" data-number="2.3.4.1">
+<h4 data-number="2.3.4.1" class="anchored" data-anchor-id="setting-the-new-functions-and-targets-to-download-data"><span class="header-section-number">2.3.4.1</span> Setting the new functions and targets to download data</h4>
+<p>Now, you have some download functions, which you can define by specifying the it in the <code>_targets.R</code> file as following:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tar_source</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"R/01_utils.R"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This will run the R scripts in the <code>R/</code> folder with your custom functions.</p>
+<p>Now, you can specify two targets in the list as following:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># target list</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1. Download accessibility data</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> access_data,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">command =</span> <span class="fu">download_accessibility</span>(),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">format =</span> <span class="st">"file"</span> </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2. Download spatial data</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> datazone_scotland,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">command =</span> <span class="fu">download_datazone</span>(),</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">format =</span> <span class="st">"file"</span> </span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>As you can see, each target follows a simple structure. The name gives the target a unique name, which is how you refer to its output in subsequent targets. The command specifies what should be run to create that target—in this case, a function. You can also include arguments within the function call when needed, and specify packages required by a particular target, although we do not need to do this yet.</p>
+<p>Notice that we have set <code>format = "file"</code> for both targets. This tells targets that these commands produce files, rather than R objects, and allows targets to track those files as part of the pipeline.</p>
+</section>
+<section id="running-download-targets" class="level4" data-number="2.3.4.2">
+<h4 data-number="2.3.4.2" class="anchored" data-anchor-id="running-download-targets"><span class="header-section-number">2.3.4.2</span> Running download targets</h4>
+<p>Now that the two download targets have been defined, let’s check how they appear in the pipeline and then run them. First, use <code>targets::tar_visnetwork()</code> to explore the dependency graph and confirm that both targets are included. Then run the pipeline with:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>targets<span class="sc">::</span><span class="fu">tar_make</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>{targets}</code> will execute the two download functions and save the resulting files in the locations specified by those functions. Once the pipeline has finished, explore the <code>data/</code> folder in your project. You can then run <code>targets::tar_visnetwork()</code> again to see that the targets have been completed and that their outputs are now being tracked by <code>{targets}</code>.</p>
+</section>
+</section>
+<section id="step-3---processing-spatial-data" class="level3" data-number="2.3.5">
+<h3 data-number="2.3.5" class="anchored" data-anchor-id="step-3---processing-spatial-data"><span class="header-section-number">2.3.5</span> Step 3 - Processing spatial data</h3>
+<p>Now you have a sense of the logic in targets. We will move on to the processing of the data that we just downloaded. To do so, create a create a in simple empty <code>R</code> script within the <code>R/</code> folder called <code>02_processing.R</code>.</p>
+<p>In this R file we will write our processing flow (simple for the sake of example but with various spatial operations):</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fun process accessibility and spatial data</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>process_access <span class="ot">&lt;-</span> <span class="cf">function</span>(access_data, datazone_scotland) {</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Read data</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  accessibility_indices <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(access_data)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  datazones <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(datazone_scotland) <span class="sc">|&gt;</span> </span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_transform</span>(<span class="dv">27700</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Glasgow city centre</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  glasgow_cc <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_point</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="fl">4.256300</span>, <span class="fl">55.860484</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    sf<span class="sc">::</span><span class="fu">st_sfc</span>(<span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="dv">27700</span>)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Subset</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  datazones_glasgow <span class="ot">&lt;-</span> datazones <span class="sc">|&gt;</span> </span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    sf<span class="sc">::</span><span class="fu">st_filter</span>(<span class="fu">st_buffer</span>(glasgow_cc, <span class="fl">10e3</span>)) </span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Join accessibility data to Glasgow</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  datazones_glasgow <span class="ot">&lt;-</span> datazones_glasgow <span class="sc">|&gt;</span> </span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(accessibility_indices, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">'DataZone'</span> <span class="ot">=</span> <span class="st">'geo_code'</span>)) </span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Return SF Glasgow with access data</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(datazones_glasgow)</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="step-4---modelling-or-creating-ouputs" class="level3" data-number="2.3.6">
+<h3 data-number="2.3.6" class="anchored" data-anchor-id="step-4---modelling-or-creating-ouputs"><span class="header-section-number">2.3.6</span> Step 4 - Modelling or creating ouputs</h3>
+<p>The step above subset and joins the data to the geometry. From here, we can continue modelling or excutening further analysis. For this example, we will create a static map. So, in the <code>02_processing.R</code>, include the following function, too:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create accessibility map</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>plot_employment_access <span class="ot">&lt;-</span> <span class="cf">function</span>(accessibility_sf){</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Output directory</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir.create</span>(</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"./data/generated"</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">recursive =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">showWarnings =</span> <span class="cn">FALSE</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Output filename</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  output_file <span class="ot">&lt;-</span> <span class="st">"./data/generated/accessibility_map.png"</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create map</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>  map_ggplot <span class="ot">&lt;-</span> accessibility_sf <span class="sc">|&gt;</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(time_of_day <span class="sc">==</span> <span class="st">"am"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">geom_sf</span>(</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">fill =</span> access_employment_all_45 <span class="sc">/</span> <span class="fl">1e3</span>),</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">linewidth =</span> <span class="dv">0</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">labs</span>(</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">"Accessibility to employment"</span>,</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">subtitle =</span> <span class="st">"Travel time by public transport at morning"</span>,</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> <span class="st">"Jobs </span><span class="sc">\n</span><span class="st">(In thousands)"</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">scale_fill_viridis_b</span>(<span class="at">n.breaks =</span> <span class="dv">6</span>) <span class="sc">+</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">theme_void</span>()</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Save map</span></span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">ggsave</span>(</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot =</span> map_ggplot,</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">filename =</span> output_file</span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Return filename so targets can track the file</span></span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>  output_file</span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that it is a good practice to keep util, processing (and potentially other types of tasks), in separate files. Also, it is a good idea to keep some sequential numbering.</p>
+</section>
+<section id="excecuting-the-full-pipeline" class="level3" data-number="2.3.7">
+<h3 data-number="2.3.7" class="anchored" data-anchor-id="excecuting-the-full-pipeline"><span class="header-section-number">2.3.7</span> Excecuting the full pipeline</h3>
+<p>Following the logic above, what the next step?…</p>
+<p>That’s right! We will specify where the next function lives, and create new targets in the list. For the first part adjust the code to let target know about the new functions:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tar_source</span>(<span class="fu">c</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"R/01_utils.R"</span>, </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"R/02_processing.R"</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then, expand the targets list with the Step 3 and 4 as following:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3. Process and join data</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> subset_glasgow,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">command =</span> <span class="fu">process_access</span>(</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">access_data =</span> access_data,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">datazone_scotland =</span> datazone_scotland</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">packages =</span> <span class="fu">c</span>(<span class="st">"dplyr"</span>, <span class="st">"readr"</span>, <span class="st">"sf"</span>),</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">format =</span> <span class="st">"qs"</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 4. Generate map</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> accessibility_map,</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">command =</span> <span class="fu">plot_employment_access</span>(</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">accessibility_sf =</span> subset_glasgow</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">packages =</span> <span class="fu">c</span>(<span class="st">"dplyr"</span>, <span class="st">"ggplot2"</span>, <span class="st">"sf"</span>),</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">format =</span> <span class="st">"file"</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The next two targets extend the pipeline by processing the downloaded data and then producing a final map. The ‘subset_glasgow’ target runs <code>process_access()</code> using the outputs of the two previous targets (‘access_data’ and ‘datazone_scotland’), so <code>{targets}</code> knows that these data must be available before this step can run.</p>
+<p>It also specifies the <code>R</code> packages required for each of these particular steps. The resulting object is stored using the ‘qs’ format. The ‘accessibility_map’ target then takes <code>subset_glasgow</code> as its input and passes it to <code>plot_employment_access()</code> to create the map. Here, ‘format = “file”’ tells <code>{targets}</code> that the output is a file rather than an R object, allowing it to track the generated map as part of the pipeline.</p>
+</section>
+<section id="build-the-full-pipeline" class="level3" data-number="2.3.8">
+<h3 data-number="2.3.8" class="anchored" data-anchor-id="build-the-full-pipeline"><span class="header-section-number">2.3.8</span> Build the full pipeline</h3>
+<p>Before runnig the extented pipeline, visualised it using <code>targets::tar_visnetwork()</code>. This should map where you are at the moment with the analysis, e.g.&nbsp;downloaded the data, there are new functions, new outcomes, but some of these are outdated.</p>
+<p>Now, run the targets with <code>targets::tar_make()</code>. This should only excecutre the outdated targets. Crucially, it should generate our accessibility map as following:</p>
+<p><img src="images/accessibility_map.png" class="img-fluid"></p>
+</section>
+</section>
+<section id="limitations-and-next-steps" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="limitations-and-next-steps"><span class="header-section-number">2.4</span> Limitations and next steps</h2>
+<p>Taken together, <code>renv</code> keeps track of the exact packages we need, while <code>targets</code> makes the steps of our analysis clear. But there is still a bit more going on behind the scenes. Our results can also depend on the version of R we are using, the operating system, system libraries, etc. <code>Docker</code> allows us to capture this wider computing environment in a reproducible container. In the next chapter, we will see how Docker and Binder can bring these pieces together and make the whole workflow easier for others to reproduce.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

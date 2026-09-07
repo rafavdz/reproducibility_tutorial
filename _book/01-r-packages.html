@@ -185,7 +185,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#installing-packages" id="toc-installing-packages" class="nav-link" data-scroll-target="#installing-packages"><span class="header-section-number">1.3.5</span> Installing packages</a></li>
   <li><a href="#lets-take-a-snapshoot-of-this" id="toc-lets-take-a-snapshoot-of-this" class="nav-link" data-scroll-target="#lets-take-a-snapshoot-of-this"><span class="header-section-number">1.3.6</span> Let’s take a snapshoot of this!</a></li>
   <li><a href="#commiting-to-github" id="toc-commiting-to-github" class="nav-link" data-scroll-target="#commiting-to-github"><span class="header-section-number">1.3.7</span> Commiting to GitHub</a></li>
-  <li><a href="#restoring-an-environment" id="toc-restoring-an-environment" class="nav-link" data-scroll-target="#restoring-an-environment"><span class="header-section-number">1.3.8</span> Restoring an environment</a></li>
+  <li><a href="#restoring-an-environmentrestore-environment" id="toc-restoring-an-environmentrestore-environment" class="nav-link" data-scroll-target="#restoring-an-environmentrestore-environment"><span class="header-section-number">1.3.8</span> Restoring an environment{restore-environment}</a></li>
   <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations"><span class="header-section-number">1.3.9</span> Limitations</a></li>
   </ul></li>
   </ul>
@@ -227,6 +227,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Then, <code>renv</code> tracks what the project uses. When you run <code>renv::snapshot()</code>, it examines the project and records the packages, versions, and sources in a file named <code>renv.lock</code>. This is the imporant bit. The lockfile becomes the reproducibility record. Someone cloning your Git repository can run <code>renv::restore()</code>. <code>renv</code> reads <code>renv.lock</code> and installs the specified package versions into that project’s private library.</li>
 <li>Having project-dedicated packages doesn’t mean duplicating the space used for packages installed. <code>renv</code> uses a global package cache on your computer. Rather than keeping completely separate copies of every package for every project, project libraries can link to packages in this cache. This saves disk space while still keeping projects isolated.</li>
 </ol>
+<p>The diagram below illustrates most of this process.</p>
+<p><img src="images/renv-flow.png" class="img-fluid"></p>
 </section>
 <section id="instructions" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="instructions"><span class="header-section-number">1.3</span> Instructions</h2>
@@ -311,7 +313,7 @@ Important
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Do not run</span></span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Example of additional packages installed outside CRAN</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">install</span>(<span class="st">"https://github.com/urbanbigdatacentre/AccessUK"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co"># renv::install("https://github.com/urbanbigdatacentre/AccessUK")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The R console will display a list with the packages and versions that will be installed. It will also promt the question <code>Do you want to proceed? [Y/n]:</code>. Agree and wait for the packages and their dependencies to be installed.</p>
 </section>
 <section id="lets-take-a-snapshoot-of-this" class="level3" data-number="1.3.6">
@@ -352,8 +354,8 @@ Important
 <p>Back in the Git pane, click Push. RStudio will upload your new commit to the remote GitHub repository.</p>
 <p>You can then check the repository on GitHub and confirm that renv.lock is there.</p>
 </section>
-<section id="restoring-an-environment" class="level3" data-number="1.3.8">
-<h3 data-number="1.3.8" class="anchored" data-anchor-id="restoring-an-environment"><span class="header-section-number">1.3.8</span> Restoring an environment</h3>
+<section id="restoring-an-environmentrestore-environment" class="level3" data-number="1.3.8">
+<h3 data-number="1.3.8" class="anchored" data-anchor-id="restoring-an-environmentrestore-environment"><span class="header-section-number">1.3.8</span> Restoring an environment{restore-environment}</h3>
 <p>Now let’s test whether the project can actually be recreated from the <code>renv.lock</code> file. The idea is to pretend that you are opening the project on a new computer, where the required packages have not yet been installed.</p>
 <p>The easiest way to do this is to make a copy of your project and use that copy for the test. Make sure the copy contains your project files and the renv.lock file, but do not copy the existing <code>renv/</code> folder. We want renv to install the packages again from the lockfile instead of simply using the packages that are already installed.</p>
 <p>Open the copy of the project in RStudio. If <code>renv</code> is not already installed, install it with:</p>

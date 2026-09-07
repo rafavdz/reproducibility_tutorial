@@ -16,6 +16,10 @@ Think of `renv` as creating a private package environment for each `R` project. 
 3. Then, `renv` tracks what the project uses. When you run `renv::snapshot()`, it examines the project and records the packages, versions, and sources in a file named `renv.lock`. This is the imporant bit. The lockfile becomes the reproducibility record. Someone cloning your Git repository can run `renv::restore()`. `renv` reads `renv.lock` and installs the specified package versions into that project's private library.
 4. Having project-dedicated packages doesn't mean duplicating the space used for packages installed. `renv` uses a global package cache on your computer. Rather than keeping completely separate copies of every package for every project, project libraries can link to packages in this cache. This saves disk space while still keeping projects isolated. 
 
+The diagram below illustrates most of this process. 
+
+![](images/renv-flow.png)
+
 ## Instructions
 
 ### Create a new RStudio project linked to GitHub
@@ -191,7 +195,7 @@ Back in the Git pane, click Push. RStudio will upload your new commit to the rem
 
 You can then check the repository on GitHub and confirm that renv.lock is there.
 
-### Restoring an environment
+### Restoring an environment{restore-environment}
 
 Now let's test whether the project can actually be recreated from the `renv.lock` file. The idea is to pretend that you are opening the project on a new computer, where the required packages have not yet been installed.
 
