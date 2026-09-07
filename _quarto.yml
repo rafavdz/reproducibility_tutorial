@@ -1,0 +1,23 @@
+project:
+  type: book
+
+book:
+  title: "Hands-on workshop: Reproducible Spatial Analysis with R. AGILE PhD School 2026, Glasgow."
+  author: "Rafael Verduzco-Torres"
+  date: "9/7/2026"
+  chapters:
+    - index.qmd
+    - 01-r-packages.qmd
+    - 02-analysis-pipeline.qmd
+    - 03-containers.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+
+
+

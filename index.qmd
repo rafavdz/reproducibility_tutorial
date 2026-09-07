@@ -1,0 +1,37 @@
+# Welcome {.unnumbered}
+
+In this workshop we aim to introduce key tools for supporting computational reproducible workflows and environments working with spatial data and analyses.
+
+## Overview
+
+This tutorial will be split in three main parts:
+
+1. ["R packages version management with `renv`"](01-r-packages.qmd), which covers [`{renv}`](https://rstudio.github.io/renv/){target="_blank"} for `R` packages version management;
+2. ["Building analysis pipelines with `targets`"](02-analysis-pipeline.qmd), which covers the [`{targets}`](https://docs.ropensci.org/targets/){target="_blank"} `R` package for structuring the analysis code in a clean and modular way;
+3. ["Containerizing working environment for cross-platform reproducibility"](03-containers.qmd), which covers `Docker` (using `Binder`) for building containers that include all operating system files, R installation, any additional system dependencies. [Binder](https://mybinder.org/) allows your code immediately reproducible by anyone, anywhere through a simple browser.
+
+## Pre-requisites
+
+The following items are pre-requisites for following all of the activities:
+
+* Have R and RStudio up and running. A 'how-to ’ guide is available here: <https://rstudio-education.github.io/hopr/starting.html>.
+* Have a free [GitHub](https://github.com/signup).
+* Sync GitHub and RStudio. Some resources to help you do this are available at:
+    - <https://happygitwithr.com/rstudio-git-github>
+    - <https://www.youtube.com/watch?v=2QJQ6pNroVM>
+
+### Basics of computational reproducibility concepts
+
+Most of this workshop assumes that participants are already familiar with the basic project- and folder-based working scheme, including how to organise code, data, and other project files within a clearly defined project folder. Although the examples in this workshop use RStudio, this approach is not specific to RStudio or even to R. The same principle can be applied when working with other development environments and tools, such as Visual Studio Code, Jupyter Notebooks. 
+
+Keeping the code, configuration files, dependencies, and other relevant project files together in a well-defined structure makes it easier to understand how an analysis was produced, share it with others, move it between computers, and recreate it in the future. More on this is available [here](https://martinctc.github.io/blog/rstudio-projects-and-working-directories-a-beginner%27s-guide/).
+
+
+## Credits
+
+This is tutorial is adapted from the excellent work by [Egor Kotov](https://www.ekotov.pro/) and [Jonas Schöley](https://www.ekotov.pro/2025-mpidr-open-science-reproducible-workflows/#:~:text=Universitat%20Pompeu%20Fabra-,Jonas%20Sch%C3%B6ley,-Max%20Planck%20Institute) available at: <https://www.ekotov.pro/2025-mpidr-open-science-reproducible-workflows/>. All the respective credits for the original work.
+
+## Licence
+
+[Open Governt Licence V3.0](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/)
+

@@ -1,0 +1,251 @@
+# R packages version management with `renv`
+
+## Why do I need `renv`?
+
+Remember the time when you opened an old `R` project and found that the code no longer runs because packages have been updated or changed?
+
+This is where `renv` comes in handy. It helps you keep track of the exact `R` packages and versions that your project depends on, creating a project-specific environment that can be shared and recreated by others. By recording these dependencies in an `renv.lock` file, `renv` makes it much easier to come back to a project months or years later, or for someone else to run your analysis and get the same results. In that sense, `renv` is a really useful part of making R projects more reproducible and easier to share. Further details from the official resource are available here [here](https://rstudio.github.io/renv/articles/renv.html).
+
+## How is this done? 
+
+Think of `renv` as creating a private package environment for each `R` project. In the background, it works roughly like this:
+
+1. You initialise the project (with `renv::init()`).
+`renv` creates an `renv/` folder and sets up a project-specific library where packages for that project are stored.
+2. Next, you install packages normally, e.g. install.packages("dplyr"), alternatively you can use `renv::install()`, which is shorter and can install packackes beyond official repositories, e.g. not just CRAN but from GitHub. Instead of relying only on your computer's global `R` library, `renv` keeps the project's packages isolated. So, you will not see or have available packages that you have not install for this specific project.
+3. Then, `renv` tracks what the project uses. When you run `renv::snapshot()`, it examines the project and records the packages, versions, and sources in a file named `renv.lock`. This is the imporant bit. The lockfile becomes the reproducibility record. Someone cloning your Git repository can run `renv::restore()`. `renv` reads `renv.lock` and installs the specified package versions into that project's private library.
+4. Having project-dedicated packages doesn't mean duplicating the space used for packages installed. `renv` uses a global package cache on your computer. Rather than keeping completely separate copies of every package for every project, project libraries can link to packages in this cache. This saves disk space while still keeping projects isolated. 
+
+## Instructions
+
+### Create a new RStudio project linked to GitHub
+
+To create a new RStudio project with GitHub version control, first create an empty repository on GitHub (Guidance if needed is [here](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository)). Then, in RStudio select `File -> New Project -> Version Control -> Git` and paste the repository URL to clone it to your computer (The url looks something like: https://github.com/yourusername/my-r-project.git).
+
+RStudio will create the local project and connect it to the GitHub repository as a remote. From then on, you can use RStudio’s Git pane to stage changes, commit them with a message, and push them to GitHub, while pulling changes made by others. 
+
+### Set your package source repository and date
+
+`R` package repositories are online servers that host R packages and their different versions. CRAN is the default repository most R users rely on, but the versions available there change over time as packages are updated. 
+
+For reproducible projects, it is useful to explicitly set the repository to a specific date, so that installing the project later retrieves packages from the same snapshot of the repository (it is like travelin in time!). For this activity, use **Posit Package Manager** and fix it to 6 September 2026. Run the following code before installing any packages (you can do this from the R console:
+
+``` r
+options(
+  repos = c(
+    "CRAN" = "https://packagemanager.posit.co/cran/2026-09-07"
+  )
+)
+```
+
+This tells `R` to use the specific snapshot repository rather than the most up-to-date defaul repository. If you also need a package that is not available from CRAN, there are ways to do it, e.g. the rOpenSci R-universe repository.
+
+If you run `getOption("repos")` again, you should see the URLs you have entered above. If it is set, the package versions you install will always correspond to the date you used. The date can be change to use more updated packages if desired.
+
+### Install `{renv}`
+
+First, install the package from CRAN using install.packages(). 
+
+``` r
+# Install renv (only needed once)
+install.packages("renv")
+```
+
+You only need to do this once on your computer. Then initialise the environment from within your project; this creates a project-specific library and sets up the files needed for renv to manage your R package environment.
+
+``` r
+# Initialise renv for the current RStudio project
+renv::init()
+```
+
+Your console output will display something like the below:
+
+``` r
+The following package(s) will be updated in the lockfile:
+
+# CRAN -----------------------------------------------------------------------
+- renv   [* -> 1.1.1]
+
+The version of R recorded in the lockfile will be updated:
+- R      [* -> 4.4.3]
+
+- Lockfile written to "path-to-your-project/renv.lock".
+- renv activated -- please restart the R session.
+```
+
+With this, `renv` will scan your project, identify the packages it currently uses, and create an `renv.lock` file containing information about their versions and sources. It is a good practice to commit this file to GitHub as you add more packages.
+
+::: callout-important
+Restart your R session so that `{renv}` can take effect. In RStudio, go to `Session -> Restart R`. After restarting, R will load the project with the new `{renv}` environment active.
+
+Do not skip this step!! as the following commands rely on `{renv}` being initialised correctly.
+:::
+
+### Customize the `{renv}` configuration {#renv-config}
+
+Before continuing, you need to set up how renv will do a few things.
+
+By default, `{renv}` scans your R scripts to identify which packages your project uses and records them in `renv.lock`. However, it can miss packages that are loaded in less obvious ways. To avoid missing dependencies, we can tell `{renv}` to track all packages installed in the project, instead of trying to guess which ones are used.
+
+To do so, run the following in the R console:
+
+``` r
+renv::settings$snapshot.type(value = "all")
+```
+
+Also, we have already configured R to use Posit Package Manager above. We should also tell `{renv}` to use it when managing packages. To do so, run this in the R console:
+
+``` r
+renv::settings$ppm.enabled(value = TRUE)
+```
+
+This helps keep package installation consistent with the repository and snapshot date defined earlier.
+
+### Installing packages
+
+We will install the packages needed for the various parts of the workshop using the code below:
+
+``` r
+# list packages used in project
+packages <- c(
+  'targets', 
+  'usethis', 
+  'visNetwork',
+  'dplyr',
+  'readr',
+  'sf',
+  'yaml',
+  'ggplot2'
+)
+# install/update packages
+install.packages(packages)
+
+# Do not run
+# Example of additional packages installed outside CRAN
+# renv::install("https://github.com/urbanbigdatacentre/AccessUK")
+
+```
+The R console will display a list with the packages and versions that will be installed. It will also promt the question `Do you want to proceed? [Y/n]:`. Agree and wait for the packages and their dependencies to be installed.
+
+### Let's take a snapshoot of this! 
+
+The next important thing is to keep a record of the packages as you continue to work, saving all the details to be recovered if you come back to this later or share your code with someone.
+
+First, you can check how what is being kept at the moment by running the following:
+
+```r
+renv::status()
+```
+
+You will see that the recently installed packages are installed but not recoded in your renv. The report looks something like this:
+
+``` r
+The following package(s) are in an inconsistent state:
+
+package     installed recorded used
+backports   y         n        y
+dplyr       y         n        y
+.
+.
+.
+.
+readr       y         n        y
+sf          y         n        y
+vctrs       y         n        y
+
+See `?renv::status` for advice on resolving these issues.
+```
+After checking the project status, use renv::snapshot() to record the current package versions in `renv.lock`. This makes sure that the project’s current package environment can be reproduced later using their same version, etc.
+
+```r
+renv::snapshot()
+```
+
+Some times some dependencies will have to be installed manually. You knwo this as there will be some warning. If so, install the missing package(s) and then run `renv::snapshot()` again. 
+
+Then check the status again:
+
+```r
+renv::status()
+```
+
+If everything is set up correctly, `renv::status()` must show the following message:
+
+``` r
+No issues found -- the project is in a consistent state.
+```
+
+### Commiting to GitHub
+
+Once renv::status() reports that the project is consistent, commit the changes to GitHub using RStudio's Git pane.
+
+The important file here is renv.lock. It records the exact package versions needed to recreate the project's R environment. The installed package library is not committed because renv automatically adds it to .gitignore.
+
+In RStudio, open the Git pane, usually located in the top-right panel. You should see a list of files that have changed since your last commit. Look for `renv.lock`.
+
+You may also see other project files that you have created or modified. Tick the Staged checkbox next to the files you want to include in the commit.
+
+A new window will open showing the files being committed. Enter a short message describing the changes, for example: **Set up reproducible R environment with renv** Then click Commit.
+
+Back in the Git pane, click Push. RStudio will upload your new commit to the remote GitHub repository.
+
+You can then check the repository on GitHub and confirm that renv.lock is there.
+
+### Restoring an environment
+
+Now let's test whether the project can actually be recreated from the `renv.lock` file. The idea is to pretend that you are opening the project on a new computer, where the required packages have not yet been installed.
+
+The easiest way to do this is to make a copy of your project and use that copy for the test. Make sure the copy contains your project files and the renv.lock file, but do not copy the existing `renv/` folder. We want renv to install the packages again from the lockfile instead of simply using the packages that are already installed.
+
+Open the copy of the project in RStudio. If `renv` is not already installed, install it with:
+
+``` r
+install.packages("renv")
+```
+
+Then initialise renv:
+
+``` r
+renv::init()
+```
+
+If renv detects the existing renv.lock file and asks whether you want to use it, choose `Yes`.
+
+Now restore the project environment:
+
+``` r
+renv::restore()
+```
+
+`{renv}` will read the package versions recorded in `renv.lock` and install them into the project's new renv environment. Specifically, renv attempts to recreate the versions that were recorded when the project was saved, not the most up-to-date or any other available version by default.
+
+You may see a message similar to:
+
+``` r
+The following package(s) will be installed:
+
+# CRAN -----------------------------------------------------------------------
+- dplyr   [1.1.4]
+- readr   [2.1.5]
+- sf      [1.0-21]
+- vctrs   [0.6.5]
+- units   [0.8-7]
+
+Do you want to proceed? [y/N]:
+```
+
+Enter `y` and press Enter to proceed.
+
+Once the restoration has finished, check the project again:
+
+``` r
+renv::status()
+```
+
+If everything has been restored correctly, renv should report that the project is consistent with the lockfile.
+
+This gives you a useful test: if the project works after starting with the renv.lock file and restoring the packages, you can be more confident that someone else will be able to recreate the same R environment on their computer.
+
+### Limitations
+
+Of course, `renv` isn’t a complete solution to reproducibility (as perhaps any individual tool). It mainly captures the `R` package environment, but your results can also depend on the R version, operating system, system libraries, external software, and data. Some packages may also become unavailable or difficult to install in the future. This is why it can be useful to combine `renv` with tools such as `targets` to make the step-by-step analysis systematic and clear, and Docker or Binder to capture the wider computing environment and make it easier for others to run the project in a consistent setup.
