@@ -114,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-containers.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Containers: Your own Git repository reproducible in Binder</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-containers.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Containers: Your own <code>Git</code> repository reproducible in <code>Binder</code></span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -160,7 +160,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03-containers.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Containers: Your own Git repository reproducible in Binder</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Containers: Your own <code>Git</code> repository reproducible in <code>Binder</code></span></span></a>
   </div>
 </li>
     </ul>
@@ -173,22 +173,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#task" id="toc-task" class="nav-link active" data-scroll-target="#task"><span class="header-section-number">3.1</span> Task</a></li>
-  <li><a href="#instructions" id="toc-instructions" class="nav-link" data-scroll-target="#instructions"><span class="header-section-number">3.2</span> Instructions</a>
+  <li><a href="#docker-and-binder" id="toc-docker-and-binder" class="nav-link active" data-scroll-target="#docker-and-binder"><span class="header-section-number">3.1</span> Docker and Binder</a></li>
+  <li><a href="#task" id="toc-task" class="nav-link" data-scroll-target="#task"><span class="header-section-number">3.2</span> Task</a></li>
+  <li><a href="#instructions" id="toc-instructions" class="nav-link" data-scroll-target="#instructions"><span class="header-section-number">3.3</span> Instructions</a>
   <ul class="collapse">
-  <li><a href="#choose-the-base-image" id="toc-choose-the-base-image" class="nav-link" data-scroll-target="#choose-the-base-image"><span class="header-section-number">3.2.1</span> Choose the base image</a></li>
+  <li><a href="#choose-the-base-image" id="toc-choose-the-base-image" class="nav-link" data-scroll-target="#choose-the-base-image"><span class="header-section-number">3.3.1</span> Choose the base image</a></li>
   </ul></li>
-  <li><a href="#install-system-libraries-for-spatial-operations" id="toc-install-system-libraries-for-spatial-operations" class="nav-link" data-scroll-target="#install-system-libraries-for-spatial-operations"><span class="header-section-number">3.3</span> Install system libraries for spatial operations</a></li>
-  <li><a href="#set-the-working-directory" id="toc-set-the-working-directory" class="nav-link" data-scroll-target="#set-the-working-directory"><span class="header-section-number">3.4</span> Set the working directory</a></li>
-  <li><a href="#copy-only-the-renv-bootstrap-files-first" id="toc-copy-only-the-renv-bootstrap-files-first" class="nav-link" data-scroll-target="#copy-only-the-renv-bootstrap-files-first"><span class="header-section-number">3.5</span> Copy only the renv bootstrap files first</a></li>
-  <li><a href="#restore-the-r-environment" id="toc-restore-the-r-environment" class="nav-link" data-scroll-target="#restore-the-r-environment"><span class="header-section-number">3.6</span> Restore the R environment</a></li>
-  <li><a href="#copy-the-rest-of-the-repository" id="toc-copy-the-rest-of-the-repository" class="nav-link" data-scroll-target="#copy-the-rest-of-the-repository"><span class="header-section-number">3.7</span> Copy the rest of the repository</a></li>
-  <li><a href="#declare-how-the-container-runs" id="toc-declare-how-the-container-runs" class="nav-link" data-scroll-target="#declare-how-the-container-runs"><span class="header-section-number">3.8</span> Declare how the container runs</a></li>
-  <li><a href="#final-dockerfile" id="toc-final-dockerfile" class="nav-link" data-scroll-target="#final-dockerfile"><span class="header-section-number">3.9</span> Final Dockerfile</a>
+  <li><a href="#install-system-libraries-for-spatial-operations" id="toc-install-system-libraries-for-spatial-operations" class="nav-link" data-scroll-target="#install-system-libraries-for-spatial-operations"><span class="header-section-number">3.4</span> Install system libraries for spatial operations</a></li>
+  <li><a href="#set-the-working-directory" id="toc-set-the-working-directory" class="nav-link" data-scroll-target="#set-the-working-directory"><span class="header-section-number">3.5</span> Set the working directory</a></li>
+  <li><a href="#copy-over-the-renv-files-first-not-everything-yet" id="toc-copy-over-the-renv-files-first-not-everything-yet" class="nav-link" data-scroll-target="#copy-over-the-renv-files-first-not-everything-yet"><span class="header-section-number">3.6</span> Copy over the renv files first (not everything yet)</a></li>
+  <li><a href="#restore-the-packages" id="toc-restore-the-packages" class="nav-link" data-scroll-target="#restore-the-packages"><span class="header-section-number">3.7</span> Restore the packages</a></li>
+  <li><a href="#copy-the-rest-of-the-repository" id="toc-copy-the-rest-of-the-repository" class="nav-link" data-scroll-target="#copy-the-rest-of-the-repository"><span class="header-section-number">3.8</span> Copy the rest of the repository</a></li>
+  <li><a href="#declare-how-the-container-runs" id="toc-declare-how-the-container-runs" class="nav-link" data-scroll-target="#declare-how-the-container-runs"><span class="header-section-number">3.9</span> Declare how the container runs</a></li>
+  <li><a href="#final-dockerfile" id="toc-final-dockerfile" class="nav-link" data-scroll-target="#final-dockerfile"><span class="header-section-number">3.10</span> Final Dockerfile</a></li>
+  <li><a href="#launching-the-git-project-to-binder-optional" id="toc-launching-the-git-project-to-binder-optional" class="nav-link" data-scroll-target="#launching-the-git-project-to-binder-optional"><span class="header-section-number">3.11</span> Launching the Git project to Binder (Optional)</a>
   <ul class="collapse">
-  <li><a href="#add-the-launch-in-binder-badge" id="toc-add-the-launch-in-binder-badge" class="nav-link" data-scroll-target="#add-the-launch-in-binder-badge"><span class="header-section-number">3.9.1</span> Add the Launch-in-Binder badge</a></li>
-  <li><a href="#next-steps-in-binder." id="toc-next-steps-in-binder." class="nav-link" data-scroll-target="#next-steps-in-binder."><span class="header-section-number">3.9.2</span> Next steps in Binder.</a></li>
+  <li><a href="#add-the-launch-in-binder-badge-optional" id="toc-add-the-launch-in-binder-badge-optional" class="nav-link" data-scroll-target="#add-the-launch-in-binder-badge-optional"><span class="header-section-number">3.11.1</span> Add the Launch-in-Binder badge (Optional)</a></li>
   </ul></li>
+  <li><a href="#alternatevly-just-launch-the-example-binder" id="toc-alternatevly-just-launch-the-example-binder" class="nav-link" data-scroll-target="#alternatevly-just-launch-the-example-binder"><span class="header-section-number">3.12</span> Alternatevly just launch the example Binder</a></li>
   </ul>
 </nav>
     </div>
@@ -197,7 +199,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Containers: Your own Git repository reproducible in Binder</span></h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Containers: Your own <code>Git</code> repository reproducible in <code>Binder</code></span></h1>
 </div>
 
 
@@ -214,33 +216,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Imagine that, instead of sending someone your analysis and asking them to install <code>R</code>, the right packages, system libraries, and other software, you could simply put the whole computer you used for the analysis in a box and post it to them. They could open the box, switch it on, and run the analysis in exactly the same environment. Of course, we cannot realistically post our laptops around every time we share an analysis—but this is roughly the idea behind containers. A container packages an application together with the software and system components it needs to run, providing a consistent environment across different computers.</p>
-<p><code>Docker</code> is one of the most widely used technologies for creating and running these containers. Instead of packaging an entire physical computer, <code>Docker</code> allows us to define a lightweight, reproducible computing environment containing things such as a particular version of <code>R</code>, R packages, system libraries, and other software required by the project. We can describe this environment in a <code>Dockerfile</code>, build it into a Docker image, and then run that image as a container. In this way, Docker extends what we have done with renv. Specifically, we can capture much more of the environment in which those packages and the analysis run as done previously.</p>
-<p>Docker and Binder</p>
-<p>In this workshop, we will use <code>Docker</code> together via <a href="https://mybinder.org/">Binder</a> as one way of making a project easier for others to reproduce. <code>Docker</code> defines the computing environment, while Binder can take the project and its container configuration and make it available through a simple web browser! So, someone can launch the project without first installing R, configuring the required packages, or setting up Docker on their own computer. Magic!</p>
-<p>However, Binder is not a solution for every project. Resources such as computing power and session time are limited, and Binder is generally better suited to interactive or educational projects. Still, full analysis examples are available out there accompanying published papers.</p>
+<p><img src="images/dockerlabs.jpeg" class="img-fluid"><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>Imagine that, instead of sending someone your analysis and asking them to install <code>R</code>, the right packages, system libraries, and other software, you could simply put the whole computer you used for the analysis in a box and post it to them. They could open the box, switch it on, and run the analysis in exactly the same environment. Of course, we can’t do this, but this is roughly the idea behind containers. A container packages a software and system components it needs to run, providing a consistent environment across different computers.</p>
+<p><code>Docker</code> is a widely used technologies for creating and running these containers. Instead of packaging an entire physical computer, <code>Docker</code> allows us to define a lightweight, reproducible computing environment containing things such as a particular version of <code>R</code>, R packages, system libraries, and other software required by the project. We can describe this environment in a <code>Dockerfile</code>, build it into a Docker image, and then run that image as a container. In this way, Docker extends what we have done with renv. Specifically, we can capture much more of the environment in which those packages and the analysis run as done previously.</p>
+<section id="docker-and-binder" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="docker-and-binder"><span class="header-section-number">3.1</span> Docker and Binder</h2>
+<p>In this workshop, we will use <code>Docker</code> together via <a href="https://mybinder.org/">Binder</a> as one way of making a project easier for others to reproduce. <code>Docker</code> defines the computing environment, while <code>Binder</code> can take the project and its container configuration and make it available through a simple web browser! So, anyone can launch the project without first installing R, configuring the required packages, or setting up Docker on their own computer. Magic!</p>
+<p>However, <code>Binder</code> is not a solution for every project. Resources such as computing power and session time are limited, and Binder is generally better suited to interactive or educational projects. Still, full analysis examples are available out there accompanying published papers (be patient as it takes a while to launch):</p>
+<ul>
+<li>GitHub: <a href="https://github.com/Gchism94/NestArchOrg" class="uri">https://github.com/Gchism94/NestArchOrg</a> and respective <a href="https://mybinder.org/v2/gh/parkgayoung/racisminarchy/master?urlpath=rstudio">Binder</a></li>
+<li>https://github.com/bbartholdy/mb11CalculusPilot</li>
+<li>https://github.com/parkgayoung/racisminarchy</li>
+</ul>
 <p>For this workshop, we will use Binder to run our Docker-based environment through a web browser, so participants do not need to install Docker or configure the environment locally. Running Docker directly on a computer is a more flexible option, particularly when you need more control or computing resources, but that workflow is beyond the scope of this tutorial.</p>
-<p>Why do I need to learn about Docker?</p>
-<p>You might reasonably ask: if renv and targets already make my R project reproducible, why do I need Docker? This is because reproducibility has several layers. <code>renv</code> helps us reproduce the <code>R</code> package environment, and targets helps us reproduce the analysis workflow, but neither necessarily captures everything installed on the computer. An analysis might also depend on a particular version of R, system libraries,etc.</p>
-<p>Fro now, the important thing is to understand the basic idea: instead of asking someone to recreate your computing environment manually, you give them a description of that environment that can be used to recreate it automatically. Combined with <code>renv</code> and <code>targets</code>, this gives us a much more complete reproducible workflow.</p>
-<section id="task" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="task"><span class="header-section-number">3.1</span> Task</h2>
-<p>This walks through the final <code>Dockerfile</code> used to publish <a href="https://github.com/rafavdz/reprod_workshop3"><code>rafavdz/reprod_workshop3</code></a> on <a href="https://mybinder.org">mybinder.org</a>, step by step.</p>
+<p><img src="images/Binderhub-Architecture.png" class="img-fluid"></p>
+<!-- ## Why do I need to learn about Docker? -->
+<!-- You might reasonably ask: if renv and targets already make my R project reproducible, why do I need Docker? This is because reproducibility has several layers. `renv` helps us reproduce the `R` package environment, and targets helps us reproduce the analysis workflow, but neither necessarily captures everything installed on the computer. An analysis might also depend on a particular version of R, system libraries,etc. -->
+<!-- Fro now, the important thing is to understand the basic idea: instead of asking someone to recreate your computing environment manually, you give them a description of that environment that can be used to recreate it automatically. Combined with `renv` and `targets`, this gives us a much more complete reproducible workflow. -->
 </section>
-<section id="instructions" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="instructions"><span class="header-section-number">3.2</span> Instructions</h2>
-<p>You will continue working on your Rstudio project. If there was not enough time to complete the acitivites of the previosu step, you can download <a href="https://github.com/rafavdz/reprod_workshop2">this completed R Project from GitHub</a>, and pick it up from there.</p>
+<section id="task" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="task"><span class="header-section-number">3.2</span> Task</h2>
+<p>This walks through the final <code>Dockerfile</code> used to launch the Binder container to reproduce our examples available <a href="https://mybinder.org/v2/gh/YOUR-USERNAME/YOUR-REPOSITORY/main?urlpath=rstudio">here</a>.</p>
+</section>
+<section id="instructions" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="instructions"><span class="header-section-number">3.3</span> Instructions</h2>
+<p>You will continue working on your Rstudio project. If there was not enough time to complete the activities of the previous step, you can download <a href="https://github.com/rafavdz/reprod_workshop2">this completed R Project from GitHub</a>, and pick it up from there.</p>
 <p>Create a simple empty text file name <code>Docker</code> in your root directory.</p>
-<section id="choose-the-base-image" class="level3" data-number="3.2.1">
-<h3 data-number="3.2.1" class="anchored" data-anchor-id="choose-the-base-image"><span class="header-section-number">3.2.1</span> Choose the base image</h3>
+<section id="choose-the-base-image" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="choose-the-base-image"><span class="header-section-number">3.3.1</span> Choose the base image</h3>
 <p>Start from the Rocker Project’s <code>binder</code> image, pinned to the exact R version recorded in <code>renv.lock</code>. Please check which version you are using.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> rocker/binder:4.4.1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In this case, we are not trying to recover an older workflow in R. So, no need to go back in time.</p>
 <p><code>renv.lock</code> records the R version the packages were snapshotted against, so the container’s R version and the lockfile’s R version need to match for <code>renv::restore()</code>.</p>
 </section>
 </section>
-<section id="install-system-libraries-for-spatial-operations" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="install-system-libraries-for-spatial-operations"><span class="header-section-number">3.3</span> Install system libraries for spatial operations</h2>
+<section id="install-system-libraries-for-spatial-operations" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="install-system-libraries-for-spatial-operations"><span class="header-section-number">3.4</span> Install system libraries for spatial operations</h2>
 <p>The project uses <code>sf</code>/<code>terra</code>, which link against GDAL, GEOS, and PROJ at the C/C++ level. <code>rocker/binder</code> doesn’t include these by default (that’s only the <code>rocker/geospatial</code> family), so they’re installed manually. This has to happen as <code>root</code>, then the shell drops back to the regular container user for everything else.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">USER</span> root</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> update <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> install <span class="at">-y</span> <span class="at">--no-install-recommends</span> <span class="dt">\</span></span>
@@ -254,43 +265,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Without this step, <code>renv::restore()</code> either fails outright trying to compile <code>sf</code>/<code>terra</code> from source, or fails to find the headers it needs even if a source build is attempted.</p>
 <p><code>rm -rf /var/lib/apt/lists/*</code> at the end isn’t strictly required, but it keeps the image smaller by discarding the package index Debian/Ubuntu downloaded for <code>apt-get update</code>.</p>
 </section>
-<section id="set-the-working-directory" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="set-the-working-directory"><span class="header-section-number">3.4</span> Set the working directory</h2>
+<section id="set-the-working-directory" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="set-the-working-directory"><span class="header-section-number">3.5</span> Set the working directory</h2>
 <div class="sourceCode" id="cb3"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> ${HOME}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><code>${NB_USER}</code> and <code>${HOME}</code> are environment variables already defined by the <code>rocker/binder</code> base image (<code>NB_USER=rstudio</code>, <code>HOME=/home/rstudio</code>). Using the variables instead of hardcoding <code>/home/rstudio</code> keeps the Dockerfile portable if the base image’s user ever changes.</p>
 </section>
-<section id="copy-only-the-renv-bootstrap-files-first" class="level2" data-number="3.5">
-<h2 data-number="3.5" class="anchored" data-anchor-id="copy-only-the-renv-bootstrap-files-first"><span class="header-section-number">3.5</span> Copy only the renv bootstrap files first</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> <span class="op">--chown=${NB_USER}</span> renv.lock renv.lock</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> <span class="op">--chown=${NB_USER}</span> .Rprofile .Rprofile</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="fu">mkdir</span> <span class="at">-p</span> renv</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> <span class="op">--chown=${NB_USER}</span> renv/activate.R renv/activate.R</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> <span class="op">--chown=${NB_USER}</span> renv/settings.json renv/settings.json</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Here, Docker caches each instruction as a layer, and invalidates a layer (and everything after it) only when its inputs change. By copying <em>just</em> the four files renv actually needs to bootstrap itself — before copying the rest of the repository — the expensive package-restore step below only re-runs when <code>renv.lock</code> or renv’s own config changes. Editing an R script or a README later won’t force a full package reinstall on the next build.</p>
+<section id="copy-over-the-renv-files-first-not-everything-yet" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="copy-over-the-renv-files-first-not-everything-yet"><span class="header-section-number">3.6</span> Copy over the renv files first (not everything yet)</h2>
+<p>This next part is worth explaining. Instead of copying your whole repo in one go, we copy <em>just</em> the files <code>renv</code> needs to get going:</p>
+<pre><code>COPY --chown=${NB_USER} renv.lock renv.lock
+COPY --chown=${NB_USER} .Rprofile .Rprofile
+RUN mkdir -p renv
+COPY --chown=${NB_USER} renv/activate.R renv/activate.R
+COPY --chown=${NB_USER} renv/settings.json renv/settings.json</code></pre>
+<p>Why bother? <code>Docker</code> remembers each step and skips ones that haven’t changed (it “caches” them). If we copied the entire repo and <em>then</em> restored packages, editing a single <code>R</code> script later would force <code>Docker</code> to reinstall every package again from scratch, even if nothing about the packages actually changed. By copying only the <code>renv</code> files first, the slow package-install step only reruns when <code>renv.lock</code> is changed.</p>
 <p><code>--chown=${NB_USER}</code> ensures these files are owned by the container’s regular user, not <code>root</code>. Otherwise, later R sessions running as <code>rstudio</code> could hit permission errors touching renv’s files.</p>
 </section>
-<section id="restore-the-r-environment" class="level2" data-number="3.6">
-<h2 data-number="3.6" class="anchored" data-anchor-id="restore-the-r-environment"><span class="header-section-number">3.6</span> Restore the R environment</h2>
+<section id="restore-the-packages" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="restore-the-packages"><span class="header-section-number">3.7</span> Restore the packages</h2>
 <div class="sourceCode" id="cb5"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">R</span> <span class="at">-e</span> <span class="st">"renv::restore()"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This installs every package pinned in <code>renv.lock</code> into renv’s own project-local library (not the system library). Two consequences of that choice, made deliberately for this repository:</p>
+<p>This is the actual install step, namely: it reads <code>renv.lock</code> and installs every package it lists. A couple of things worth knowing about this choice:</p>
 <ul>
-<li><strong>renv stays active at runtime.</strong> Because <code>.Rprofile</code> and <code>renv/activate.R</code> are still present in the image, every new R session in the running container re-activates renv automatically — attaching the already-restored library, not reinstalling anything.</li>
-<li><strong>The lockfile stays visible and inspectable.</strong> Anyone inspecting this workflow can open <code>renv.lock</code>, run <code>renv::status()</code>, and see exactly what’s pinned, which is in line of a reproducibility workshop.</li>
+<li>We’re keeping <code>renv</code> <strong>active</strong>, meaning it stays turned on inside the container. So when someone opens RStudio later, renv quietly worka in the background and the environment is already exactly as pinned (no reinstalling, just picking up what’s already there).</li>
+<li>We’re <em>not</em> deleting <code>renv.lock</code> or <code>.Rprofile</code> afterward. We’re keeping them because this is a reproducibility workshop. So, people should be able to actually open the lockfile and see what’s there.</li>
 </ul>
 </section>
-<section id="copy-the-rest-of-the-repository" class="level2" data-number="3.7">
-<h2 data-number="3.7" class="anchored" data-anchor-id="copy-the-rest-of-the-repository"><span class="header-section-number">3.7</span> Copy the rest of the repository</h2>
+<section id="copy-the-rest-of-the-repository" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="copy-the-rest-of-the-repository"><span class="header-section-number">3.8</span> Copy the rest of the repository</h2>
 <div class="sourceCode" id="cb6"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> <span class="op">--chown=${NB_USER}</span> . ${HOME}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Everything else — scripts, <code>_targets.R</code>, data folders, documentation — gets copied in after the package restore. Because this happens <em>after</em> the cached restore layer, changing any of these files and rebuilding only re-runs this <code>COPY</code> and nothing above it.</p>
+<p>With packages already installed, we bring in everything else — the scripts, <code>_targets.R</code>, data folders, all of it. Because this happens <em>after</em> the cached restore layer, changing any of these files and rebuilding only re-runs this <code>COPY</code> and nothing above it.</p>
 </section>
-<section id="declare-how-the-container-runs" class="level2" data-number="3.8">
-<h2 data-number="3.8" class="anchored" data-anchor-id="declare-how-the-container-runs"><span class="header-section-number">3.8</span> Declare how the container runs</h2>
+<section id="declare-how-the-container-runs" class="level2" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="declare-how-the-container-runs"><span class="header-section-number">3.9</span> Declare how the container runs</h2>
 <div class="sourceCode" id="cb7"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPOSE</span> 8888</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">"jupyter"</span>, <span class="st">"lab"</span>, <span class="st">"--ip"</span>, <span class="st">"0.0.0.0"</span>, <span class="st">"--no-browser"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>These two lines are inherited from the upstream <code>rocker/binder</code> image and are restated here for clarity. Binder’s infrastructure expects a Jupyter server listening on <code>8888</code>, which is what actually gets launched. RStudio isn’t started by a separate <code>CMD</code>; it’s reached through <code>jupyter-rsession-proxy</code>, which routes a browser request at a specific path through to an <code>rserver</code> process the image already knows how to start. That’s what the launch URL takes care of next.</p>
+<p>These last two lines are just carried over from the original <code>rocker/binder</code> image. Binder expects something listening on port 8888, and that’s what starts it up. RStudio isn’t launched by this line directly; it’s reached through a proxy the base image already has built in (more on that below).</p>
 </section>
-<section id="final-dockerfile" class="level2" data-number="3.9">
-<h2 data-number="3.9" class="anchored" data-anchor-id="final-dockerfile"><span class="header-section-number">3.9</span> Final Dockerfile</h2>
+<section id="final-dockerfile" class="level2" data-number="3.10">
+<h2 data-number="3.10" class="anchored" data-anchor-id="final-dockerfile"><span class="header-section-number">3.10</span> Final Dockerfile</h2>
 <p>So your final Docker file should look as following:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> rocker/binder:4.4.1</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -322,20 +334,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPOSE</span> 8888</span>
 <span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">"jupyter"</span>, <span class="st">"lab"</span>, <span class="st">"--ip"</span>, <span class="st">"0.0.0.0"</span>, <span class="st">"--no-browser"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Save this in your project.</p>
-<section id="add-the-launch-in-binder-badge" class="level3" data-number="3.9.1">
-<h3 data-number="3.9.1" class="anchored" data-anchor-id="add-the-launch-in-binder-badge"><span class="header-section-number">3.9.1</span> Add the Launch-in-Binder badge</h3>
-<p>Add the following in your README.md</p>
+<p>Save this in your project, and commit changes and push to GitHub.</p>
+</section>
+<section id="launching-the-git-project-to-binder-optional" class="level2" data-number="3.11">
+<h2 data-number="3.11" class="anchored" data-anchor-id="launching-the-git-project-to-binder-optional"><span class="header-section-number">3.11</span> Launching the Git project to Binder (Optional)</h2>
+<p>With the Docker file ready, now we can move to the following easy steps.</p>
+<p>Simply go to <a href="https://mybinder.org/" class="uri">https://mybinder.org/</a>. Paste the GitHub URL and click the ‘Launch’ button.</p>
+<p>In the background, <code>Binder</code> takes care of the infrastructure. In short, it starts a temporary cloud server, gets the files from your repository, and uses your <code>Docker</code> configuration to build (or retrieve) a <code>Docker</code> image containing the required software and dependencies. It then starts a container from that image and connects it to a web interface. From your perspective, all of this happens automatically: you simply wait for Binder to finish building the environment and then access your project through your browser.</p>
+<p>The first time you launch Binder, it may take longer because it needs to build the Docker image and install the required dependencies. Subsequent launches are usually faster because the existing image can be reused, although this depends on the size of the environment and whether the repository has changed.</p>
+<section id="add-the-launch-in-binder-badge-optional" class="level3" data-number="3.11.1">
+<h3 data-number="3.11.1" class="anchored" data-anchor-id="add-the-launch-in-binder-badge-optional"><span class="header-section-number">3.11.1</span> Add the Launch-in-Binder badge (Optional)</h3>
+<p>Add the following in your README.md in your RProject.</p>
 <pre><code>[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/rafavdz/reprod_workshop3/main?urlpath=rstudio)</code></pre>
 <p>This gives anyone visiting the repository a one-click route into a running RStudio session with the environment already restored.</p>
-<p>Now, make sure to commit your changes, and push them.</p>
 </section>
-<section id="next-steps-in-binder." class="level3" data-number="3.9.2">
-<h3 data-number="3.9.2" class="anchored" data-anchor-id="next-steps-in-binder."><span class="header-section-number">3.9.2</span> Next steps in Binder.</h3>
-<p>No need to follow these, as it is time and resource consuming for the remote server, but you can access</p>
+</section>
+<section id="alternatevly-just-launch-the-example-binder" class="level2" data-number="3.12">
+<h2 data-number="3.12" class="anchored" data-anchor-id="alternatevly-just-launch-the-example-binder"><span class="header-section-number">3.12</span> Alternatevly just launch the example Binder</h2>
+<p>You can access the intended Binder direly clicking on the button below.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://mybinder.org/v2/gh/YOUR-USERNAME/YOUR-REPOSITORY/main?urlpath=rstudio"><img src="https://mybinder.org/badge_logo.svg" class="img-fluid figure-img" alt="Binder"></a></p>
+<figcaption>Binder</figcaption>
+</figure>
+</div>
+<p>This will prompt an RStudio environment ready with the packages you set ein renv. Next, just simply proceed to run <code>targets::tar_make()</code> to reproduce all the steps, starting with the download of data, etc. You can check the final output (accessibility map), at the path <code>data/generated/accessibility_map.png</code>.</p>
 
 
 </section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Source: <a href="https://github.com/collabnix/dockerlabs">DockerLabs</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->

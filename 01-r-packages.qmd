@@ -1,5 +1,9 @@
 # R packages version management with `renv`
 
+![](images/ernev-illustration.png)[^1]
+
+[^1]: Source: [BioRender]( https://BioRender.com)
+
 ## Why do I need `renv`?
 
 Remember the time when you opened an old `R` project and found that the code no longer runs because packages have been updated or changed?
@@ -18,7 +22,9 @@ Think of `renv` as creating a private package environment for each `R` project. 
 
 The diagram below illustrates most of this process. 
 
-![](images/renv-flow.png)
+![](images/renv-flow.png)[^2]
+
+[^2]: Source: [renv package](https://rstudio.github.io/renv/)
 
 ## Instructions
 

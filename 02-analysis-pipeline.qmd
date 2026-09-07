@@ -1,5 +1,9 @@
 # Analysis pipelines with `targets`
 
+![](images/targets-openscience.png)[^1]
+
+[^1]: Source: [targets](https://docs.ropensci.org/targets/.
+
 ## Why do I need targets?
 
 Have you ever had to re-run an entire analysis from the beginning because you changed one input file or modified a single step in your code? or, have you came across a code-based project developed by someone else, and you don't know where to start?! This can become particularly frustrating when some parts of the analysis take a long time to run or when a project consists of many scripts that need to be executed in a particular order.
@@ -213,7 +217,11 @@ Notice that we have set `format = "file"` for both targets. This tells targets t
 
 #### Running download targets
 
-Now that the two download targets have been defined, let's check how they appear in the pipeline and then run them. First, use `targets::tar_visnetwork()` to explore the dependency graph and confirm that both targets are included. Then run the pipeline with:
+Now that the two download targets have been defined, let's check how they appear in the pipeline and then run them. First, use `targets::tar_visnetwork()` to explore the dependency graph and confirm that both targets are included. This should look something like the image below:
+
+![](images/vis_network1.png)
+
+Then, run the pipeline with:
 
 ``` r
 targets::tar_make()
@@ -345,11 +353,15 @@ It also specifies the `R` packages required for each of these particular steps. 
 
 ### Build the full pipeline
 
-Before runnig the extented pipeline, visualised it using `targets::tar_visnetwork()`. This should map where you are at the moment with the analysis, e.g. downloaded the data, there are new functions, new outcomes, but some of these are outdated.
+Before runnig the extented pipeline, visualised it using `targets::tar_visnetwork()`. This should map where you are at the moment with the analysis, e.g. downloaded the data, there are new functions, new outcomes, but some of these are outdated. Something like the diagram below:
 
-Now, run the targets with `targets::tar_make()`. This should only excecutre the outdated targets. Crucially, it should generate our accessibility map as following:
+![](images/vis_network3.png)
+
+Now, run the targets with `targets::tar_make()`. This should only execute the outdated targets. Crucially, it should generate our accessibility map as following:
 
 ![](images/accessibility_map.png)
+
+This map will be saved (as per your function) at `data/generated/accessibility_map.png`.
 
 If for some reason, something didn't go well or there was not enough time to complete this activity, you can download the complete activities from [this repo](https://github.com/rafavdz/reprod_workshop2). You should be able to quickly restore the renv, and the, simply run `target::tar_make()`.
 

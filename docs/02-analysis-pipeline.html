@@ -161,7 +161,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03-containers.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Containers: Your own Git repository reproducible in Binder</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Containers: Your own <code>Git</code> repository reproducible in <code>Binder</code></span></span></a>
   </div>
 </li>
     </ul>
@@ -213,6 +213,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<p><img src="images/targets-openscience.png" class="img-fluid"><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <section id="why-do-i-need-targets" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="why-do-i-need-targets"><span class="header-section-number">2.1</span> Why do I need targets?</h2>
 <p>Have you ever had to re-run an entire analysis from the beginning because you changed one input file or modified a single step in your code? or, have you came across a code-based project developed by someone else, and you don’t know where to start?! This can become particularly frustrating when some parts of the analysis take a long time to run or when a project consists of many scripts that need to be executed in a particular order.</p>
@@ -369,7 +370,9 @@ Note
 </section>
 <section id="running-download-targets" class="level4" data-number="2.3.4.2">
 <h4 data-number="2.3.4.2" class="anchored" data-anchor-id="running-download-targets"><span class="header-section-number">2.3.4.2</span> Running download targets</h4>
-<p>Now that the two download targets have been defined, let’s check how they appear in the pipeline and then run them. First, use <code>targets::tar_visnetwork()</code> to explore the dependency graph and confirm that both targets are included. Then run the pipeline with:</p>
+<p>Now that the two download targets have been defined, let’s check how they appear in the pipeline and then run them. First, use <code>targets::tar_visnetwork()</code> to explore the dependency graph and confirm that both targets are included. This should look something like the image below:</p>
+<p><img src="images/vis_network1.png" class="img-fluid"></p>
+<p>Then, run the pipeline with:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>targets<span class="sc">::</span><span class="fu">tar_make</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><code>{targets}</code> will execute the two download functions and save the resulting files in the locations specified by those functions. Once the pipeline has finished, explore the <code>data/</code> folder in your project. You can then run <code>targets::tar_visnetwork()</code> again to see that the targets have been completed and that their outputs are now being tracked by <code>{targets}</code>.</p>
 </section>
@@ -479,9 +482,11 @@ Note
 </section>
 <section id="build-the-full-pipeline" class="level3" data-number="2.3.8">
 <h3 data-number="2.3.8" class="anchored" data-anchor-id="build-the-full-pipeline"><span class="header-section-number">2.3.8</span> Build the full pipeline</h3>
-<p>Before runnig the extented pipeline, visualised it using <code>targets::tar_visnetwork()</code>. This should map where you are at the moment with the analysis, e.g.&nbsp;downloaded the data, there are new functions, new outcomes, but some of these are outdated.</p>
-<p>Now, run the targets with <code>targets::tar_make()</code>. This should only excecutre the outdated targets. Crucially, it should generate our accessibility map as following:</p>
+<p>Before runnig the extented pipeline, visualised it using <code>targets::tar_visnetwork()</code>. This should map where you are at the moment with the analysis, e.g.&nbsp;downloaded the data, there are new functions, new outcomes, but some of these are outdated. Something like the diagram below:</p>
+<p><img src="images/vis_network3.png" class="img-fluid"></p>
+<p>Now, run the targets with <code>targets::tar_make()</code>. This should only execute the outdated targets. Crucially, it should generate our accessibility map as following:</p>
 <p><img src="images/accessibility_map.png" class="img-fluid"></p>
+<p>This map will be saved (as per your function) at <code>data/generated/accessibility_map.png</code>.</p>
 <p>If for some reason, something didn’t go well or there was not enough time to complete this activity, you can download the complete activities from <a href="https://github.com/rafavdz/reprod_workshop2">this repo</a>. You should be able to quickly restore the renv, and the, simply run <code>target::tar_make()</code>.</p>
 </section>
 </section>
@@ -490,6 +495,12 @@ Note
 <p>Taken together, <code>renv</code> keeps track of the exact packages we need, while <code>targets</code> makes the steps of our analysis clear. But there is still a bit more going on behind the scenes. Our results can also depend on the version of R we are using, the operating system, system libraries, etc. <code>Docker</code> allows us to capture this wider computing environment in a reproducible container. In the next chapter, we will see how Docker and Binder can bring these pieces together and make the whole workflow easier for others to reproduce.</p>
 
 
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Source: [targets](https://docs.ropensci.org/targets/.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->
@@ -917,8 +928,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./03-containers.html" class="pagination-link" aria-label="Containers: Your own Git repository reproducible in Binder">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Containers: Your own Git repository reproducible in Binder</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./03-containers.html" class="pagination-link" aria-label="Containers: Your own `Git` repository reproducible in `Binder`">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Containers: Your own <code>Git</code> repository reproducible in <code>Binder</code></span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
