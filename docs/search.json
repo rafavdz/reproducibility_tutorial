@@ -14,7 +14,7 @@
     "href": "index.html#overview",
     "title": "Hands-on workshop: Reproducible Spatial Analysis with R. AGILE PhD School 2026, Glasgow.",
     "section": "Overview",
-    "text": "Overview\nThis tutorial will be split in three main parts:\n\n“R packages version management with renv”, which covers {renv} for R packages version management;\n“Building analysis pipelines with targets”, which covers the {targets} R package for structuring the analysis code in a clean and modular way;\n“Containerizing working environment for cross-platform reproducibility”, which covers Docker (using Binder) for building containers that include all operating system files, R installation, any additional system dependencies. Binder allows your code immediately reproducible by anyone, anywhere through a simple browser.",
+    "text": "Overview\nThis tutorial will be split in three main parts, which can also be thought of as levels or reproducibility:\n\n“R packages version management with renv”, which covers {renv} for R packages version management;\n“Building analysis pipelines with targets”, which covers the {targets} R package for structuring the analysis code in a clean and modular way;\n“Containerizing working environment for cross-platform reproducibility”, which covers Docker (using Binder) for building containers that include all operating system files, R installation, any additional system dependencies. Binder allows your code immediately reproducible by anyone, anywhere through a simple browser.",
     "crumbs": [
       "Welcome"
     ]

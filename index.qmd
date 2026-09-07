@@ -4,7 +4,7 @@ In this workshop we aim to introduce key tools for supporting computational repr
 
 ## Overview
 
-This tutorial will be split in three main parts:
+This tutorial will be split in three main parts, which can also be thought of as levels or reproducibility:
 
 1. ["R packages version management with `renv`"](01-r-packages.qmd), which covers [`{renv}`](https://rstudio.github.io/renv/){target="_blank"} for `R` packages version management;
 2. ["Building analysis pipelines with `targets`"](02-analysis-pipeline.qmd), which covers the [`{targets}`](https://docs.ropensci.org/targets/){target="_blank"} `R` package for structuring the analysis code in a clean and modular way;
