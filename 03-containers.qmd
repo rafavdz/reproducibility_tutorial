@@ -184,7 +184,7 @@ This gives anyone visiting the repository a one-click route into a running RStud
 
 You can access the intended Binder direly clicking on the button below. 
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/YOUR-USERNAME/YOUR-REPOSITORY/main?urlpath=rstudio)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/rafavdz/reprod_workshop3/main?urlpath=rstudio)
 
 This will prompt an RStudio environment ready with the packages you set ein renv. Next, just simply proceed to run `targets::tar_make()` to reproduce all the steps, starting with the download of data, etc. You can check the final output (accessibility map), at the path `data/generated/accessibility_map.png`.
 
